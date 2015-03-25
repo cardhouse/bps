@@ -3,7 +3,7 @@
 @section('content')
 
     <div id="hero-cta" class="clearfix">
-        <a href="{{ route('create_appointment_path') }}" class="btn primaryBtn home-cta-btn">APPOINTMENTS</a>
+        <a href="{{ route('appointments_interstitial') }}" class="btn primaryBtn home-cta-btn">APPOINTMENTS</a>
         <a href="#map-window" class="btn primaryBtn home-cta-btn">DIRECTIONS</a>
         <a href="#join-window" class="btn primaryBtn home-cta-btn">COMMUNITY</a>
     </div>
