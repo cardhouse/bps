@@ -34,7 +34,7 @@ Route::controllers([
 ]);
 
 Route::get('dogs/add',[
-    'as' => 'cadd_dog_route',
+    'as' => 'add_dog_route',
     'uses' => 'DogsController@create'
 ]);
 
