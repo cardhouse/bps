@@ -50,17 +50,17 @@ class AppointmentsController extends Controller {
 
     }
 
-    public function viewWeek(Carbon $start = null)
+    /*public function viewWeek(Carbon $start = null)
     {
         $booked = $this->appointmentRepo->getWeek($date);
         $available = array();
 
         $date = (isset($start)) ? $start : Carbon::today();
 
-        return
+        return $booked;
 
         //return $date;
 
-    }
+    }*/
 
 }
