@@ -14,8 +14,8 @@
 Route::get('/', 'PagesController@home');
 
 Route::get('/appointments', [
-    'as' => 'create_appointment_path',
-    'uses' => 'AppointmentsController@index'
+    'as' => 'appointments_interstitial',
+    'uses' => 'PagesController@appointments'
 ]);
 
 Route::get('/appointments/show', [

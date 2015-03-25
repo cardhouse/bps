@@ -24,4 +24,9 @@ class PagesController extends Controller {
         return view('pages.dashboard', compact('user'));
     }
 
+    public function appointments()
+    {
+        return view('appointments.interstitial');
+    }
+
 }
