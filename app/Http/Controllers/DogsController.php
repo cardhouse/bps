@@ -39,9 +39,9 @@ class DogsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(AddDogRequest $request, Guard $user)
+	public function store(AddDogRequest $request)
 	{
-        $user->dogs()->create($request->all());
+        \Auth::user()->dogs()->create($request->all());
 
         return redirect('dashboard');
 	}

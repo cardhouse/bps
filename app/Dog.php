@@ -23,7 +23,7 @@ class Dog extends Model {
 
     public function hasUpcomingAppointment()
     {
-        return $this->appointments->where('time', '>', Carbon::now());
+        return $this->appointments()->where('time', '>', Carbon::now())->first();
     }
 
     public function getNextAppointment()
