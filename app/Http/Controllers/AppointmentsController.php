@@ -5,10 +5,10 @@ use Bubbles\Dog;
 use Bubbles\Http\Requests;
 use Bubbles\Http\Controllers\Controller;
 
+use Bubbles\Http\Requests\ScheduleDogsRequest;
 use Bubbles\Repositories\AppointmentRepo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AppointmentsController extends Controller {
 
@@ -20,15 +20,12 @@ class AppointmentsController extends Controller {
 
     function __construct(AppointmentRepo $appointmentRepo)
     {
-        $this->middleware('guest', ['only' => 'index']);
         $this->appointmentRepo = $appointmentRepo;
     }
 
-    public function index()
-    {
-        return view('appointments.index');
-	}
-
+    /**
+     * @return \Illuminate\View\View
+     */
     public function show()
     {
         $date = Carbon::today();
@@ -36,11 +33,63 @@ class AppointmentsController extends Controller {
         return view('appointments.list', compact('date', 'appointments'));
     }
 
-    public function create()
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function schedule(ScheduleDogsRequest $request)
     {
-        $dog = Dog::find(1);
-        $dt = Carbon::today();
-        $dt->addDay()->hour(8);
+        $dogs = [];
+
+        $days = [
+            1,2,3,5,6
+        ];
+
+        $times = [
+            8,
+            10,
+            13
+        ];
+
+        $date = Carbon::today();
+        $appointments = Appointment::all();
+        $list = [];
+
+        for($i=0; $i <= 7; $i++)
+        {
+            foreach ($times as $time) {
+                $date->setTime($time, 00);
+
+                if(! in_array($date->dayOfWeek, $days) || ! $date->isFuture())
+                {
+                    continue;
+                }
+
+                if(! $appointments->contains('attributes.time', $date->toDateTimeString()))
+                {
+                    $list[$date->toFormattedDateString()][] = $date->toTimeString();
+                }
+            }
+            $date->addDay();
+        }
+
+        foreach ($request->get('dogs') as $dog) {
+            $found = Dog::find($dog);
+        }
+
+        return view('appointments.list')
+                    ->with('dog', $found)
+                    ->with('available', $list)
+                    ->with('appointments', $appointments);
+    }
+
+    /**
+     * @return Appointment
+     */
+    public function create($time, $dog_id)
+    {
+        $dog = Dog::find($dog_id);
+        $dt = Carbon::parse($time);
 
         $appointment = new Appointment(['time' => $dt]);
 

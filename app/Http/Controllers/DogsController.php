@@ -5,6 +5,7 @@ use Bubbles\Http\Requests;
 use Bubbles\Http\Controllers\Controller;
 
 use Bubbles\Http\Requests\AddDogRequest;
+use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -31,15 +32,16 @@ class DogsController extends Controller {
 	}
 
 	/**
-	 * Store a newly created resource in storage.
+	 * Save a user's dog and redirect them
+     * back to the dashboard.
+     *
+     * Validates against AddDogRequest
 	 *
 	 * @return Response
 	 */
-	public function store(AddDogRequest $request)
+	public function store(AddDogRequest $request, Guard $user)
 	{
-        $dog = new Dog($request->all());
-
-        \Auth::user()->dogs()->save($dog);
+        $user->dogs()->create($request->all());
 
         return redirect('dashboard');
 	}

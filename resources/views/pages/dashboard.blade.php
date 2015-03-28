@@ -6,24 +6,24 @@
 
 @section('content')
 
-    Hello {{ $user->first_name }}
-
     @if($user->hasDogs())
     <div>
+        {!! Form::open(['action' => 'AppointmentsController@schedule']) !!}
         {{-- Make form for ajax request --}}
         <h2>Book appointment for:</h2>
+        @include('layouts.partials.errors')
         <ul>
             @foreach($user->dogs as $dog)
-                <li>
-                    {{ $dog->name }}
-                    <ul>
-                        <li>
-                            {{ $dog->breed }} ({{ $dog->size }})
-                            <input type="checkbox">
-                        </li>
-                    </ul>
-                    {{-- Checkbox for appointment --}}
-                </li>
+                @if($dog->hasUpcomingAppointment())
+                    <p>{{ $dog->name }} has an appointment on {{ Carbon\Carbon::parse($dog->getNextAppointment()->time)
+                    ->toDayDateTimeString()
+                    }}</p>
+                @else
+                    <li>
+                        {!! Form::label($dog->name) !!}
+                        {!! Form::checkbox('dogs[]', $dog->id) !!}
+                    </li>
+                @endif
             @endforeach
         </ul>
         {!! link_to_route('add_dog_route', 'Add a New Dog') !!}
@@ -31,7 +31,8 @@
         <br/>
 
         {{-- Submit button for the form --}}
-        <input type="button" value="Find Openings">
+        {!! Form::submit('Find Openings') !!}
+        {!! Form::close() !!}
     </div>
     @else
         {!! link_to_route('add_dog_route', 'Add a New Dog') !!}

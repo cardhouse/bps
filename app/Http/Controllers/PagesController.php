@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
  * Class PagesController
  *
  * @Middleware("auth", only={"dashboard"})
- * @Middleware("guest", only={"appointments"})
  * @package Bubbles\Http\Controllers
  */
 class PagesController extends Controller {
@@ -18,10 +17,13 @@ class PagesController extends Controller {
     function __construct()
     {
         $this->middleware('auth', ['only' => 'dashboard']);
-        $this->middleware('guest', ['only' => 'appointments']);
     }
 
     /**
+     * Display the home page
+     *
+     * route: /
+     *
      * @return \Illuminate\View\View
      */
     public function home()
@@ -30,6 +32,11 @@ class PagesController extends Controller {
 	}
 
     /**
+     * Display the authenticated user's dashboard
+     * Or redirect to login page
+     *
+     * route: /dashboard
+     *
      * @return \Illuminate\View\View
      */
     public function dashboard()
@@ -40,7 +47,13 @@ class PagesController extends Controller {
 
 
     /**
+     * Display the interstitial appointment page
+     * if there is no current authenticated user.
+     * If authenticated, it redirects to the dashboard
      *
+     * route: appointments
+     *
+     * @Middleware("guest")
      * @return \Illuminate\View\View
      */
     public function appointments()
