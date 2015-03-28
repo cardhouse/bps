@@ -95,7 +95,7 @@ class AppointmentsController extends Controller {
 
         $dog->appointments()->save($appointment);
 
-        return $appointment;
+        return redirect('dashboard');
 
     }
 
