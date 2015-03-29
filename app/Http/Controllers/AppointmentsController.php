@@ -9,18 +9,21 @@ use Bubbles\Http\Requests\ScheduleDogsRequest;
 use Bubbles\Repositories\AppointmentRepo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Bubbles\Services\Scheduler as Scheduler;
 
 class AppointmentsController extends Controller {
 
+    protected $scheduler;
 
     /**
      * @var AppointmentRepo
      */
     private $appointmentRepo;
 
-    function __construct(AppointmentRepo $appointmentRepo)
+    function __construct(AppointmentRepo $appointmentRepo, Scheduler $scheduler)
     {
         $this->appointmentRepo = $appointmentRepo;
+        $this->scheduler = $scheduler;
     }
 
     /**
@@ -37,41 +40,11 @@ class AppointmentsController extends Controller {
      * @param Request $request
      * @return array
      */
-    public function schedule(ScheduleDogsRequest $request)
+    public function schedule(ScheduleDogsRequest $request, $weeks = 0)
     {
-        $dogs = [];
 
-        $days = [
-            1,2,3,5,6
-        ];
-
-        $times = [
-            8,
-            10,
-            13
-        ];
-
-        $date = Carbon::today();
-        $appointments = Appointment::all();
-        $list = [];
-
-        for($i=0; $i <= 7; $i++)
-        {
-            foreach ($times as $time) {
-                $date->setTime($time, 00);
-
-                if(! in_array($date->dayOfWeek, $days) || ! $date->isFuture())
-                {
-                    continue;
-                }
-
-                if(! $appointments->contains('attributes.time', $date->toDateTimeString()))
-                {
-                    $list[$date->toFormattedDateString()][] = $date->toTimeString();
-                }
-            }
-            $date->addDay();
-        }
+        $date = Carbon::today()->addWeeks($weeks);
+        $available = $this->scheduler->getAvailableForWeek($date);
 
         foreach ($request->get('dogs') as $dog) {
             $found = Dog::find($dog);
@@ -79,8 +52,7 @@ class AppointmentsController extends Controller {
 
         return view('appointments.list')
                     ->with('dog', $found)
-                    ->with('available', $list)
-                    ->with('appointments', $appointments);
+                    ->with('available', $available);
     }
 
     /**

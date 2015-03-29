@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider {
 			'Illuminate\Contracts\Auth\Registrar',
 			'Bubbles\Services\Registrar'
 		);
+
 	}
 
 }

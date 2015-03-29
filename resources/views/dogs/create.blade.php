@@ -38,7 +38,7 @@
                     'sm' => 'Small (1 - 20 lbs)',
                     'med' => 'Medium (21 - 45 lbs)',
                     'lg' => 'Large (46 - 80 lbs)',
-                    'xl' => 'X-Large (81 lbs - Horse)'
+                    'xl' => 'X-Large (81 + lbs)'
                 ],
                 ['class' => 'form-control'])
             !!}

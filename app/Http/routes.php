@@ -18,7 +18,7 @@ Route::get('/appointments', [
     'uses' => 'PagesController@appointments'
 ]);
 
-Route::post('/appointments/schedule', 'AppointmentsController@schedule');
+Route::post('/appointments/schedule/{weeks?}', 'AppointmentsController@schedule');
 
 Route::get('/appointments/make/{time}/{dog_id}', [
     'as' => 'create_appointment_path',

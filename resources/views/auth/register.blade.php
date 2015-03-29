@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label">Phone Number</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="(555) 555-5555" name="phone"
+                                <input type="tel" class="form-control" placeholder="(555) 555-5555" name="phone"
                                        value="{{ old('name') }}">
                             </div>
                         </div>
