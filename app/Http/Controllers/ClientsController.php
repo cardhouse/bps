@@ -17,6 +17,8 @@ class ClientsController extends Controller {
 
     public function show($name)
     {
+        $view = view('auth.login')->renderSections();
+        dd(join($view, ''));
         $user = $this->userRepo->findByLastName($name);
         return view('pages.dashboard', compact('user'));
 	}

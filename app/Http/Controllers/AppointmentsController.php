@@ -10,6 +10,7 @@ use Bubbles\Repositories\AppointmentRepo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Bubbles\Services\Scheduler as Scheduler;
+use Illuminate\Support\Facades\Session;
 
 class AppointmentsController extends Controller {
 
@@ -40,48 +41,64 @@ class AppointmentsController extends Controller {
      * @param Request $request
      * @return array
      */
-    public function schedule(ScheduleDogsRequest $request, $weeks = 0)
+    public function schedule(ScheduleDogsRequest $request)
     {
-
-        $date = Carbon::today()->addWeeks($weeks);
-        $available = $this->scheduler->getAvailableForWeek($date);
-
         foreach ($request->get('dogs') as $dog) {
             $found = Dog::find($dog);
         }
 
-        return view('appointments.list')
-                    ->with('dog', $found)
-                    ->with('available', $available);
+        session(['dog' => $found]);
+        return redirect('/appointments/schedule');
     }
 
     /**
      * @return Appointment
      */
-    public function create($time, $dog_id)
+    public function create($time)
     {
-        $dog = Dog::find($dog_id);
+        $dog = session('dog');
         $dt = Carbon::parse($time);
 
         $appointment = new Appointment(['time' => $dt]);
 
         $dog->appointments()->save($appointment);
 
+        Session::forget('dog');
+
         return redirect('dashboard');
 
     }
 
-    /*public function viewWeek(Carbon $start = null)
+    /**
+     * Show a list of available appointments for the week
+     *
+     * @param int $weeks
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function viewWeek($weeks = 0)
     {
-        $booked = $this->appointmentRepo->getWeek($date);
-        $available = array();
+        // No dog set, redirect to the dashboard
+        if( ! Session::has('dog')) {
+            return redirect('dashboard');
+        }
 
-        $date = (isset($start)) ? $start : Carbon::today();
+        $date = Carbon::today()->addWeeks($weeks);
 
-        return $booked;
+        return view('appointments.list')
+            ->with('dog', session('dog'))
+            ->with('available', $this->scheduler->getAvailableForWeek($date))
+        ;
 
-        //return $date;
+    }
 
-    }*/
 
+    /**
+     * Cancel making an appointment for a dog and redirect to dashboard
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function forgetAppointment(){
+        Session::forget('dog');
+        return redirect('dashboard');
+    }
 }

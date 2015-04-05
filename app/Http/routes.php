@@ -19,8 +19,10 @@ Route::get('/appointments', [
 ]);
 
 Route::post('/appointments/schedule/{weeks?}', 'AppointmentsController@schedule');
+Route::get('/appointments/schedule/{weeks?}', 'AppointmentsController@viewWeek');
+Route::get('/appointments/return', 'AppointmentsController@forgetAppointment');
 
-Route::get('/appointments/make/{time}/{dog_id}', [
+Route::get('/appointments/make/{time}', [
     'as' => 'create_appointment_path',
     'uses' => 'AppointmentsController@create'
 ]);
@@ -53,5 +55,3 @@ Route::get('dashboard', [
 Route::get('clients/{name}', [
     'uses' => 'ClientsController@show'
 ]);
-
-Route::get('view/week/{start?}', 'AppointmentsController@viewWeek');

@@ -24,14 +24,14 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">First Name</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="first_name" value="{{ old('name') }}">
+								<input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}">
 							</div>
 						</div>
 
                         <div class="form-group">
                             <label class="col-md-4 control-label">Last Name</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="last_name" value="{{ old('name') }}">
+                                <input type="text" class="form-control" name="last_name" value="{{ old('last_name') }}">
                             </div>
                         </div>
 
@@ -39,7 +39,7 @@
                             <label class="col-md-4 control-label">Phone Number</label>
                             <div class="col-md-6">
                                 <input type="tel" class="form-control" placeholder="(555) 555-5555" name="phone"
-                                       value="{{ old('name') }}">
+                                       value="{{ old('phone') }}">
                             </div>
                         </div>
 
