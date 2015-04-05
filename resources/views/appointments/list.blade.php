@@ -7,6 +7,10 @@
     <a href="{{ action('AppointmentsController@forgetAppointment') }}">Cancel</a>
     <hr>
 
+    @if($week > 0)
+        {!! link_to_action('AppointmentsController@viewWeek', 'Previous Week', ['week' => ($week - 1)]) !!}
+    @endif
+
     @forelse($available as $date => $times)
         <ul>{{ $date }}
         @foreach($times as $time)
@@ -19,7 +23,6 @@
     @empty
 
     @endforelse
-    {{--{{ $appointments }}--}}
 
-    {{--{{ $date->weekOfYear }}--}}
+    {!! link_to_action('AppointmentsController@viewWeek', 'Next Week', ['week' => ($week + 1)]) !!}
 @stop

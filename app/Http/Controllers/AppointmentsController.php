@@ -87,6 +87,7 @@ class AppointmentsController extends Controller {
         return view('appointments.list')
             ->with('dog', session('dog'))
             ->with('available', $this->scheduler->getAvailableForWeek($date))
+            ->with('week', $weeks)
         ;
 
     }
