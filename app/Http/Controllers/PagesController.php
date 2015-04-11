@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
  * Class PagesController
  *
  * @Middleware("auth", only={"dashboard"})
+ * @Middleware("guest", only={"appointments"})
  * @package Bubbles\Http\Controllers
  */
 class PagesController extends Controller {
@@ -53,7 +54,6 @@ class PagesController extends Controller {
      *
      * route: appointments
      *
-     * @Middleware("guest")
      * @return \Illuminate\View\View
      */
     public function appointments()

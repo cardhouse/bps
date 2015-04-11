@@ -15,9 +15,13 @@
         <ul>
             @foreach($user->dogs as $dog)
                 @if($dog->hasUpcomingAppointment())
-                    <p>{{ $dog->name }} has an appointment on {{ Carbon\Carbon::parse($dog->getNextAppointment()->time)
-                    ->toDayDateTimeString()
-                    }}</p>
+                    <p>
+                        {{ $dog->name }} has an appointment on
+                        {{ Carbon\Carbon::parse($dog->getNextAppointment()->time)->toDayDateTimeString() }}
+                        <a href="{{ action('AppointmentsController@cancel', ['appointment' => $dog->getNextAppointment()->id]) }}">
+                        (cancel this appointment)
+                        </a>
+                    </p>
                 @else
                     <li>
                         {!! Form::label($dog->name) !!}

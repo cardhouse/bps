@@ -3,6 +3,7 @@
 use Bubbles\Http\Requests;
 
 use Bubbles\Repositories\UserRepo;
+use Bubbles\User;
 
 class ClientsController extends Controller {
 
@@ -17,10 +18,15 @@ class ClientsController extends Controller {
 
     public function show($name)
     {
-        $view = view('auth.login')->renderSections();
-        dd(join($view, ''));
         $user = $this->userRepo->findByLastName($name);
         return view('pages.dashboard', compact('user'));
 	}
+
+    public function index()
+    {
+        $clients = User::all()->lists('last_name');
+
+        return view('clients.index', compact('clients'));
+    }
 
 }

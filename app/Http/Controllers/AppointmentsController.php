@@ -102,4 +102,16 @@ class AppointmentsController extends Controller {
         Session::forget('dog');
         return redirect('dashboard');
     }
+
+    public function cancel($appointment)
+    {
+        return view('appointments.cancel')->with('id', $appointment);
+    }
+
+    public function delete($id)
+    {
+        Appointment::destroy($id);
+
+        return redirect('dashboard');
+    }
 }
