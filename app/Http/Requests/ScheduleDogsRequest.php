@@ -22,7 +22,7 @@ class ScheduleDogsRequest extends Request {
     public function rules()
     {
         return [
-            'dogs' => 'array|required|min:1'
+            'dog' => 'required'
         ];
     }
 

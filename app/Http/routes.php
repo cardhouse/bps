@@ -29,7 +29,6 @@ Route::post('/appointments/schedule/{weeks?}', 'AppointmentsController@schedule'
 Route::get('/appointments/schedule/{weeks?}', 'AppointmentsController@viewWeek');
 Route::get('/appointments/return', 'AppointmentsController@forgetAppointment');
 Route::get('/appointments/make/{time}', ['as' => 'create_appointment_path', 'uses' => 'AppointmentsController@create']);
-Route::get('/appointments/list', ['as' => 'create_appointment_path', 'uses' => 'AppointmentsController@show']);
 Route::get('/appointments/{appointment}/cancel', 'AppointmentsController@cancel');
 Route::delete('/appointments/{appointment}/cancel', 'AppointmentsController@delete');
 

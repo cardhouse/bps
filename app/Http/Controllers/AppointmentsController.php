@@ -28,26 +28,12 @@ class AppointmentsController extends Controller {
     }
 
     /**
-     * @return \Illuminate\View\View
-     */
-    public function show()
-    {
-        $date = Carbon::today();
-        $appointments = Appointment::all();
-        return view('appointments.list', compact('date', 'appointments'));
-    }
-
-    /**
      * @param Request $request
      * @return array
      */
     public function schedule(ScheduleDogsRequest $request)
     {
-        foreach ($request->get('dogs') as $dog) {
-            $found = Dog::find($dog);
-        }
-
-        session(['dog' => $found]);
+        session(['dog' => Dog::find($request->get('dog'))]);
         return redirect('/appointments/schedule');
     }
 
@@ -60,9 +46,7 @@ class AppointmentsController extends Controller {
         $dt = Carbon::parse($time);
 
         $appointment = new Appointment(['time' => $dt]);
-
         $dog->appointments()->save($appointment);
-
         Session::forget('dog');
 
         return redirect('dashboard');
@@ -86,7 +70,7 @@ class AppointmentsController extends Controller {
 
         return view('appointments.list')
             ->with('dog', session('dog'))
-            ->with('available', $this->scheduler->getAvailableForWeek($date))
+            ->with('available', $this->scheduler->getAvailable($date))
             ->with('week', $weeks)
         ;
 

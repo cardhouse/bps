@@ -21,9 +21,9 @@ class Dog extends Model {
         return $this->hasMany('Bubbles\Appointment');
     }
 
-    public function hasUpcomingAppointment()
+    public function upcomingAppointments()
     {
-        return $this->appointments()->where('time', '>', Carbon::now())->first();
+        return $this->appointments()->where('time', '>', Carbon::now())->get();
     }
 
     public function getNextAppointment()
