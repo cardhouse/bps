@@ -12,7 +12,7 @@ class Scheduler {
     public function getAvailable(Carbon $start, $end = 7)
     {
         $list = [];
-        $appointments = Appointment::where('time', '>', $start->copy()->addDays($end))->get();
+        $appointments = Appointment::where('time', '<', $start->copy()->addDays($end))->get();
         for($i=0; $i <= $end; $i++)
         {
             foreach($this->times as $time) {
