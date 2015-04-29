@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row">
                 <div class="page-header">
-                    <h2>My Dogs</h2>
+                    <h2>My Dogs <small>{!! link_to_route('add_dog_route', 'Add a New Dog') !!}</small></h2>
                 </div>
             </div>
             <div class="row">
@@ -24,12 +24,15 @@
                         <div class="list-group">
 
                         @forelse($dog->upcomingAppointments() as $appointment)
-                            <p class="list-group-item">
-                                {{ Carbon\Carbon::parse($appointment->time)->toDayDateTimeString() }}
-                                <a href="{{ action('AppointmentsController@cancel', ['appointment' => $appointment->id]) }}">
-                                    (cancel this appointment)
+                            <div class="list-group-item">
+                                <a class="pull-right" href="{{ action('AppointmentsController@cancel', ['appointment' =>
+                                $appointment->id]) }}">
+                                    cancel
                                 </a>
-                            </p>
+                                <p class="list-group-item-heading">
+                                    {{ Carbon\Carbon::parse($appointment->time)->toDayDateTimeString() }}
+                                </p>
+                            </div>
                         @empty
                         @endforelse
 
