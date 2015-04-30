@@ -16,31 +16,34 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
-/**
- * Static pages
- */
-Route::get('/', 'PagesController@home');
-Route::get('/appointments', ['as' => 'appointments_interstitial','uses' => 'PagesController@appointments']);
 
-/**
- * Appointment routes
- */
-Route::post('/appointments/schedule/{weeks?}', 'AppointmentsController@schedule');
-Route::get('/appointments/schedule/{weeks?}', 'AppointmentsController@viewWeek');
-Route::get('/appointments/return', 'AppointmentsController@forgetAppointment');
-Route::get('/appointments/make/{time}', ['as' => 'create_appointment_path', 'uses' => 'AppointmentsController@create']);
-Route::get('/appointments/{appointment}/cancel', 'AppointmentsController@cancel');
-Route::delete('/appointments/{appointment}/cancel', 'AppointmentsController@delete');
+Route::group(['middleware' => 'auth'], function(){
+    /**
+     * Static pages
+     */
+    Route::get('/', 'PagesController@home');
+    Route::get('/appointments', ['as' => 'appointments_interstitial','uses' => 'PagesController@appointments']);
 
-/**
- * Dog routes
- */
-Route::get('dogs/add',['as' => 'add_dog_route', 'uses' => 'DogsController@create']);
-Route::post('dogs/add', ['as' => 'add_dog_route', 'uses' => 'DogsController@store']);
+    /**
+     * Appointment routes
+     */
+    Route::post('/appointments/schedule/{weeks?}', 'AppointmentsController@schedule');
+    Route::get('/appointments/schedule/{weeks?}', 'AppointmentsController@viewWeek');
+    Route::get('/appointments/return', 'AppointmentsController@forgetAppointment');
+    Route::get('/appointments/make/{time}', ['as' => 'create_appointment_path', 'uses' => 'AppointmentsController@create']);
+    Route::get('/appointments/{appointment}/cancel', 'AppointmentsController@cancel');
+    Route::delete('/appointments/{appointment}/cancel', 'AppointmentsController@delete');
 
-/**
- * Dashboards / Admin
- */
-Route::get('dashboard', ['as' => 'dashboard_route', 'uses' => 'PagesController@dashboard']);
-Route::get('clients/{name}', 'ClientsController@show');
-Route::get('clients', 'ClientsController@index');
+    /**
+     * Dog routes
+     */
+    Route::get('dogs/add',['as' => 'add_dog_route', 'uses' => 'DogsController@create']);
+    Route::post('dogs/add', ['as' => 'add_dog_route', 'uses' => 'DogsController@store']);
+
+    /**
+     * Dashboards / Admin
+     */
+    Route::get('dashboard', ['as' => 'dashboard_route', 'uses' => 'PagesController@dashboard']);
+    Route::get('clients/{name}', 'ClientsController@show');
+    Route::get('clients', 'ClientsController@index');
+});
